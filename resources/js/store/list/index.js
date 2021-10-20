@@ -24,6 +24,10 @@ const mutations = {
     DELETE_LISTS(state, payload) {
         const list = state.lists.map(list => list.id).indexOf(payload);
         state.lists.splice(list, 1);
+    },
+    DELETE_MOVIE_FROM_LIST(state, payload) {
+        const movie = state.getMovies.map(movie => movie.id).indexOf(payload);
+        state.getMovies.splice(movie, 1);
     }
 };
 
@@ -77,6 +81,14 @@ const actions = {
             })
             .catch(err => {
                 console.log(err);
+            });
+    },
+    deleteMovieFromList({ commit }, data) {
+        console.log("tttt", data.movieId);
+        axios
+            .get(`/api/list/${data.listId}/movie/${data.movieId}/delete`)
+            .then(response => {
+                commit("DELETE_MOVIE_FROM_LIST", data.movieId);
             });
     }
 };

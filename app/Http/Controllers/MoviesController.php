@@ -46,4 +46,13 @@ class MoviesController extends Controller
 
         return $similarMovies;
     }
+
+    public function searchMovie($movieName)
+    {
+        $results = $this->moviesRepository->searchMovie($movieName);
+
+       return response()->json([
+           'results' => $results
+       ]);
+    }
 }

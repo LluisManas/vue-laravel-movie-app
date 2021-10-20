@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="card">
+        <div @click="update_movie(movie)" class="card">
             <div class="card-body movie-card">
             <img :src="getImage(movie)" class="movie-image">
-                <h5 class="card-title"><router-link :to="{name: 'movieDetails', params: {id: movie.id}}">{{ movie.original_title }}</router-link></h5>
+                <h5 class="card-title">{{ movie.original_title }}</h5>
             </div>
         </div>
     </div>
@@ -17,6 +17,9 @@ export default {
       getImage(movie) {
           const image = "https://image.tmdb.org/t/p/w500" + movie.backdrop_path;
           return image;
+      },
+      update_movie(movie) {
+          this.$store.dispatch('getMovieDetails', movie.id)
       }
   }
 }
