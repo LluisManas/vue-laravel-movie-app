@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\ListController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,14 +23,19 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home-page', [HomeController::class, 'index'])->name('home');
 
+//User Settings
+Route::get('/api/user', [UserController::class, 'getUserDetails']);
+Route::get('/api/countries-list', [UserController::class, 'getCountriesList']);
+Route::post('/api/update-country', [UserController::class, 'updateStreamingCountry']);
 
-//movie
+//Movie
 Route::get('/api/popular-movies', [MoviesController::class, 'popularMovies']);
 Route::get('/api/top-rated-movies', [MoviesController::class, 'topRatedMovies']);
 Route::get('/api/movie/{id}', [MoviesController::class, 'detailsMovie']);
 Route::get('/api/movie/{id}/similar', [MoviesController::class, 'similarMovies']);
+Route::get('/api/search-movie/{name}', [MoviesController::class, 'searchMovie']);
 
 //Movie lists
 Route::get('/api/lists', [ListController::class, 'showLists']);
@@ -36,6 +43,7 @@ Route::post('/api/create-list', [ListController::class, 'createList']);
 Route::post('/api/add-movie-to-list/{id}', [ListController::class, 'addMovieToList']);
 Route::get('/api/get-movies-from-list/{id}', [ListController::class, 'getMoviesFromList']);
 Route::get('/api/delete-list/{id}', [ListController::class, 'deleteList']);
+Route::get('/api/list/{listId}/movie/{movieId}/delete', [ListController::class, "deleteMovieFromList"]);
 
 Route::any('{slug}', function () {
     return view('home');

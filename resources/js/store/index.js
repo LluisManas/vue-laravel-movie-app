@@ -5,6 +5,7 @@ import topRatedMovies from "./topRatedMovies";
 import detailsMovie from "./detailsMovie";
 import similarMovie from "./similarMovies";
 import createList from "./list";
+import userDetails from "./user";
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
         topRatedMovies,
         detailsMovie,
         similarMovie,
-        createList
+        createList,
+        userDetails
     }
 });

@@ -1,18 +1,23 @@
 <template>
-    <div>
-        <h2>Add {{ getMovieDetails['original_title'] }} To List:</h2>
-        <form @submit.prevent="sendData()">
-            <div class="form-group">
-                <label for="listName">Select a list</label>
-                <select class="selectpicker" id="listId">
-                    <option v-for="list in getMovieLists" :key="list.id" :value="list.id">{{ list['name'] }}</option>
-                </select>
-            </div>
-            <button class="btn btn-success">
-                Add to List
-            </button>
-        </form>
-        <p id="success"></p>
+    <div class="container">
+        <div class="justify-content-center">
+            <h2>Add {{ getMovieDetails['original_title'] }} To List:</h2>
+            <form @submit.prevent="sendData()">
+                <div class="form-group">
+                    <label for="listName">Select a list</label>
+                    <select class="selectpicker" id="listId">
+                        <option v-for="list in getMovieLists" :key="list.id" :value="list.id">{{ list['name'] }}</option>
+                    </select>
+                </div>
+                <button class="btn btn-success">
+                    Add to List
+                </button>
+                <button class="btn btn-alert">
+                    <router-link :to="{path: '/home-page'}">Back to Movies</router-link>
+                </button>
+            </form>
+            <p id="success"></p>
+        </div>
     </div>
 </template>
 

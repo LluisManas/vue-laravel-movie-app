@@ -4,6 +4,7 @@ namespace App\Repository\Eloquent;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class MoviesRepository
 {
@@ -34,8 +35,10 @@ class MoviesRepository
         $detailsMovie = Http::withToken(config('services.tmdb.token'))
         ->get('http://api.themoviedb.org/3/movie/' . $movieId)
         ->json();
+
+        $countryCode = $this->getStreamingCountry();
         
-        $detailsMovie['provider'] = $this->getStreamingProviderName($detailsMovie['id'], 'DE');
+        $detailsMovie['provider'] = $this->getStreamingProviderName($detailsMovie['id'], $countryCode);
         
         return $detailsMovie;
     }
@@ -43,12 +46,12 @@ class MoviesRepository
     public function addStreamingProvider($moviesList)
     {
         $countryCode = $this->getStreamingCountry();
-        
+       
         foreach ($moviesList['results'] as $key => $moviesDetails) {
             $movieId = $moviesDetails['id'];
             $moviesList['results'][$key]['provider'] = $this->getStreamingProviderName($movieId, $countryCode);
         }
-
+       
         return $moviesList;
     }
 
@@ -83,7 +86,15 @@ class MoviesRepository
 
     public function getStreamingCountry()
     {
-        return "DE";
+        $user = auth()->user();
+        $country = User::find($user['id']);
+        if ($country) {
+            $countryCode = $country['country'];
+        } else {
+            $countrycode = 'DE';
+        }
+
+        return $countryCode;
     }
 
     public function getSimilarMovies($movieId)
@@ -93,6 +104,17 @@ class MoviesRepository
         ->json();
 
         return $similarMovies['results'];
+    }
+
+    public function searchMovie($movieName)
+    {
+        $results = Http::withToken(config('services.tmdb.token'))
+        ->get('http://api.themoviedb.org/3/search/movie/?query=' . $movieName)
+        ->json();
+        
+        $foundMovies = $this->addStreamingProvider($results);
+
+        return $foundMovies['results'];
     }
 
 }

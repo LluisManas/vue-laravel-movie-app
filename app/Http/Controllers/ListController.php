@@ -109,4 +109,15 @@ class ListController extends Controller
             'message' => 'You delete successfully the list'
         ]);
     }
+
+    public function deleteMovieFromList($listId, $movieId) 
+    {
+        $user = auth()->user();
+        $deleteMovie = ListMovie::where('movie_id', $movieId)->where('list_id', $listId)->where('user_id', $user['id'])->first();
+        $deleteMovie->delete();
+
+        return response()->json([
+            'message' => 'Movie deleted from list.'
+        ]);
+    }
 }

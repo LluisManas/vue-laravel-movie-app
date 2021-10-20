@@ -19,8 +19,13 @@ export default {
   props: ["movie"],
   methods: {
       getImage(movie) {
+        if (movie.backdrop_path) {
           const image = "https://image.tmdb.org/t/p/w500" + movie.backdrop_path;
           return image;
+        } else {
+          const image = "https://motivatevalmorgan.com/wp-content/uploads/2016/06/default-movie-1-1-150x150.jpg";
+          return image;
+        }
       }
   }
 };

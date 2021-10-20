@@ -4,7 +4,7 @@
         <div class="grid-container">
             <div v-for="movie in getMoviesFromList" :key="movie.id">
                 <moviecart :movie="movie"></moviecart>
-                <button class="btn btn-danger">Remove from List</button>
+                <button class="btn btn-danger" @click="removeFromList(movie.id)">Remove from List</button>
             </div>
         </div>
     </div>
@@ -19,6 +19,15 @@ export default {
     props: ['id'],
     created() {
         this.$store.dispatch('getMoviesFromList', this.id)
+    },
+    methods: {
+        removeFromList(movieId) {
+            const data = {
+                'movieId': movieId,
+                'listId': this.id
+            };
+            this.$store.dispatch('deleteMovieFromList', data);
+        }
     },
     computed: {
         ...mapGetters(['getMoviesFromList', 'getMovieDetails'])
